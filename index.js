@@ -27,6 +27,9 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'))
 
+
+const categories = ['fruit', 'vegetable'];
+
 // my routes
 
 // Routes for getting all products
@@ -39,7 +42,7 @@ const products = await Product.find({})
 // A route for adding new products
 
 app.get('/products/new', (req, res) => {
-    res.render('products/new');
+    res.render('products/new', {categories});
 })
 
 // Route for posting the product
@@ -56,7 +59,7 @@ app.post('/products', async (req, res) => {
 app.get('/products/:id', async(req, res) => {
 const {id} = req.params;
 const product = await Product.findById(id)
-res.render('products/show', {product});
+res.render('products/show', {product, categories});
 })
 
 // Route for editing product
