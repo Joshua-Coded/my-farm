@@ -7,6 +7,7 @@ const methodOverride = require('method-override');
 
 //model schema
 const Product = require('./models/product');
+const { ifError } = require('assert');
 
 //my database connection
 mongoose.connect('mongodb://localhost:27017/myalx', {useNewUrlParser: true})
@@ -35,8 +36,16 @@ const categories = ['fruit', 'vegetable'];
 // Routes for getting all products
 
 app.get('/products', async(req, res) => {
-const products = await Product.find({})
-    res.render('products/index', { products });
+const {category} = req.query;
+if(category) {
+const products = await Product.find({category})
+res.render('products/index', { products, category });
+} else {
+    const products = await Product.find({})
+    res.render('products/index', { products, category: 'All' });
+}
+   
+    
 })
 
 // A route for adding new products
