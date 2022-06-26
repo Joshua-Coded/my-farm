@@ -2,6 +2,8 @@ const express = require('express');
 const  mongoose  = require('mongoose');
 const app = express();
 const path = require('path');
+const methodOverride = require('method-override');
+
 
 //model schema
 const Product = require('./models/product');
@@ -21,7 +23,9 @@ mongoose.connect('mongodb://localhost:27017/myalx', {useNewUrlParser: true})
 // my views engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
 app.use(express.urlencoded({extended: true}))
+app.use(methodOverride('_method'))
 
 // my routes
 
@@ -55,7 +59,21 @@ const product = await Product.findById(id)
 res.render('products/show', {product});
 })
 
+// Route for editing product
+   app.get('/products/:id/edit', async (req, res) => {
+   const {id} = req.params;
+   const product = await Product.findById(id);
+   res.render('products/edit', {product})
+})
 
+//Route for submitting the product 
+app.put('/products/:id', (req, res) => {
+    const {id} = req.params;
+  const product = await Product.findByIdAndUpdate(id, req.body, {runValidators: true, new: true})
+  res.redirect(`/products/${product._id}`);
+    
+
+})
 
 //my server
 app.listen(3000, () => {
