@@ -66,11 +66,11 @@ res.render('products/show', {product, categories});
    app.get('/products/:id/edit', async (req, res) => {
    const {id} = req.params;
    const product = await Product.findById(id);
-   res.render('products/edit', {product})
+   res.render('products/edit', {product, categories})
 })
 
 //Route for submitting the product 
-app.put('/products/:id', (req, res) => {
+app.put('/products/:id', async(req, res) => {
     const {id} = req.params;
   const product = await Product.findByIdAndUpdate(id, req.body, {runValidators: true, new: true})
   res.redirect(`/products/${product._id}`);

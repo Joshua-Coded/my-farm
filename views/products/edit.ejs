@@ -17,7 +17,7 @@
        <label for="category">Select category</label><br><br>
         <select name="category" id="category">
             <% for(let category of categories) { %>
-                <option value="<%= category %>"<%= product.category === category ? 'Selected' : '' %> ><%= category %></option> 
+                <option value="<%= category %>"<%= product.category === category ? 'Selected' : ' ' %>><%= category %></option> 
                 <% } %> 
             
         </select><br><br>
