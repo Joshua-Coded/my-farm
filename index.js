@@ -75,6 +75,14 @@ app.put('/products/:id', (req, res) => {
   const product = await Product.findByIdAndUpdate(id, req.body, {runValidators: true, new: true})
   res.redirect(`/products/${product._id}`);
     
+})
+
+//route for deleting product
+
+app.delete('/products/:id', async (req, res) => {
+const {id} = req.params;
+const deletedProduct = await Product.findByIdAndDelete(id)
+res.redirect('/products');
 
 })
 
